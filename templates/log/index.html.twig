@@ -4,24 +4,21 @@
 
 {% block body %}
     <h1>Log index</h1>
-
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Sented</th>
                 <th>Ip</th>
                 <th>Mac</th>
-                <th>Sented</th>
                 <th>Result</th>
             </tr>
         </thead>
         <tbody>
         {% for log in logs %}
             <tr>
-                <td>{{ log.id }}</td>
+                <td>{{ log.sented|date('d/m/Y H:i') }}</td>
                 <td>{{ log.ip }}</td>
                 <td>{{ log.mac }}</td>
-                <td>{{ log.sented ? log.sented|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ log.result }}</td>
             </tr>
         {% else %}
