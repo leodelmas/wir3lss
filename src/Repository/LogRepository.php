@@ -30,6 +30,7 @@ class LogRepository extends ServiceEntityRepository
                     $qb->expr()->orX(
                         $qb->expr()->like('log.ip', ':search'),
                         $qb->expr()->like('log.mac', ':search'),
+                        $qb->expr()->like('log.sented', ':search')
                     )
                 )
                     ->setParameter('search', "%{$logSearch->getKeyword()}%");
