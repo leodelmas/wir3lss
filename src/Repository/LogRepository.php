@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Log;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Dto\LogSearch;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Log|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,14 +21,33 @@ class LogRepository extends ServiceEntityRepository
         parent::__construct($registry, Log::class);
     }
 
+    public function findAllFiltered(?LogSearch $logSearch): Query
+    {
+        $qb = $this->createQueryBuilder('log');
+        if (null !== $logSearch) {
+            if ($logSearch->getKeyword()) {
+                $qb->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->like('log.ip', ':search'),
+                        $qb->expr()->like('log.mac', ':search'),
+                    )
+                )
+                    ->setParameter('search', "%{$logSearch->getKeyword()}%");
+            }
+        }
+        $qb->orderBy('log.sented', 'desc');
+        return $qb->getQuery();
+    }
+
     public function findAllOneYearOld()
     {
         $now = new \DateTime();
         $nowLastYear = $now->modify('-1 year')->format('Y-m-d');
 
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.sented < :val')
+        return $this->createQueryBuilder('log')
+            ->andWhere('log.sented < :val')
             ->setParameter('val', $nowLastYear)
+            ->orderBy('log.sented', 'desc')
             ->getQuery()
             ->getResult();
     }

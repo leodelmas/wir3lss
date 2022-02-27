@@ -3,32 +3,41 @@
 {% block title %}Log index{% endblock %}
 
 {% block body %}
-    <h1>Log index</h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Sented</th>
-                <th>Ip</th>
-                <th>Mac</th>
-                <th>Result</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for log in logs %}
-            <tr>
-                <td>{{ log.sented|date('d/m/Y H:i') }}</td>
-                <td>{{ log.ip }}</td>
-                <td>{{ log.mac }}</td>
-                <td>{{ log.result }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <div class="pagination">
-        {{ knp_pagination_render(logs) }}
+<h1>Log index</h1>
+<form method="get" class="row row-cols-lg-auto g-3 align-items-center">
+    <div class="col-12">
+        <input type="text" name="search-keyword" class="form-control" value="{{ app.request.query.get('search-keyword') }}" aria-label="Rechercher" placeholder="Mot-clé">
     </div>
+    <div class="col-12">
+        <a href="{{ path('log_index') }}" class="btn btn-outline-secondary mr-1">Annuler</a>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </div>
+</form>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Sented</th>
+            <th>Ip</th>
+            <th>Mac</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.sented|date('d/m/Y H:i') }}</td>
+            <td>{{ log.ip }}</td>
+            <td>{{ log.mac }}</td>
+            <td>{{ log.result }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6">no records found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="pagination">
+    {{ knp_pagination_render(logs) }}
+</div>
 {% endblock %}
