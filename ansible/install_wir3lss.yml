@@ -6,7 +6,10 @@
 
   tasks:
   - name: Print debug message
-    debug:
-      msg: Hello, world!
+    shell: hostname
+    register: show
+
+  - name: Show hostname
+    debug: msg="{{ show.stdout }}"
 
 
