@@ -1,0 +1,5 @@
+[webserver]
+wir3lss-webserver.duckdns.org
+
+[webserver:vars]
+ansible_user = webserver
