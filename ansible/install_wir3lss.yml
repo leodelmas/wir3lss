@@ -1,15 +1,26 @@
 ---
-# This playbook prints a simple debug message
-- name: Echo 
-  hosts: 127.0.0.1
-  connection: local
+- name: Installation de wir3lss
+  hosts: webserver
+  become: yes
 
   tasks:
+  - name: Vérification de Nginx en status démarré
+    shell: systemctl status nginx | grep Active | awk -v N=2 '{print $N}'
+    register: result_nginx_status
+
   - name: Print debug message
-    shell: hostname
-    register: show
+    debug:
+      msg: "{{ result_nginx_status.stdout }}"
+  - name: Installation de Nginx
+    block:
+      - name: Update
+        apt: update_cache=yes
+      - name: Installation du packet
+        apt:
+          name: nginx
+          state: latest
+        notify: restart nginx
+    when: result_nginx_status.stdout == 'inactive'
 
-  - name: Show hostname
-    debug: msg="{{ show.stdout }}"
-
-
+  handlers:
+        - import_tasks: handlers/main.yml

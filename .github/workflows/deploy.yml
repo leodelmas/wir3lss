@@ -21,3 +21,5 @@ jobs:
           inventory: |
             [all]
             wir3lss-webserver.duckdns.org
+          options: |
+            --inventory ./ansible/hosts
