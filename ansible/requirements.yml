@@ -1,0 +1,8 @@
+# Installation php role
+- src: geerlingguy.php
+
+# Installation composer role
+- src: geerlingguy.composer
+
+# Installation Yarn role
+- src: ocha.yarn
