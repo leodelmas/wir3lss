@@ -3,24 +3,36 @@
   hosts: webserver
   become: yes
 
-  tasks:
-  - name: Vérification de Nginx en status démarré
-    shell: systemctl status nginx | grep Active | awk -v N=2 '{print $N}'
-    register: result_nginx_status
+  vars_files:
+    - prod/main.yml
+  roles:
+    - geerlingguy.php
+    - geerlingguy.composer
+    - ocha.yarn
 
-  - name: Print debug message
-    debug:
-      msg: "{{ result_nginx_status.stdout }}"
+  tasks:
   - name: Installation de Nginx
     block:
       - name: Update
         apt: update_cache=yes
-      - name: Installation du packet
+      - name: Installation de Nginx
         apt:
           name: nginx
           state: latest
         notify: restart nginx
-    when: result_nginx_status.stdout == 'inactive'
+
+  - name: Application droit www-data
+    command: chown www-data:www-data /var/www/html
+
+  - name: Deploiement du code depuis GitHub
+    block:
+      - name: Copie du source code
+        git:
+          repo: git@github.com:leodelmas/wir3lss.git
+          version: master
+          dest: /var/www/html 
+          accept_hostkey: yes
+          force: yes
 
   handlers:
-        - import_tasks: handlers/main.yml
+        - import_tasks: handlers/main.yml 
