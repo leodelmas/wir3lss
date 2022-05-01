@@ -17,8 +17,8 @@
     <thead>
         <tr>
             <th>Sented</th>
-            <th>Ip</th>
-            <th>Mac</th>
+            <th>Source</th>
+            <th>Destination</th>
             <th>Result</th>
         </tr>
     </thead>
@@ -26,8 +26,8 @@
         {% for log in logs %}
         <tr>
             <td>{{ log.sented|date('d/m/Y H:i') }}</td>
-            <td>{{ log.ip }}</td>
-            <td>{{ log.mac }}</td>
+            <td>{{ log.source }}</td>
+            <td>{{ log.destination }}</td>
             <td>{{ log.result }}</td>
         </tr>
         {% else %}

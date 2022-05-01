@@ -16,8 +16,8 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 20; $i++) {
             $log = new Log();
             $log
-                ->setIp($faker->ipv4)
-                ->setMac($faker->macAddress)
+                ->setSource($faker->ipv4)
+                ->setDestination($faker->ipv4)
                 ->setSented($faker->dateTime())
                 ->setResult($results[rand(0, 1)]);
             $manager->persist($log);
