@@ -14,10 +14,10 @@ class Log
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $ip;
+    private $source;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $mac;
+    private $destination;
 
     #[ORM\Column(type: 'datetime')]
     private $sented;
@@ -30,27 +30,25 @@ class Log
         return $this->id;
     }
 
-    public function getIp(): ?string
+    public function getSource(): ?string
     {
-        return $this->ip;
+        return $this->source;
     }
 
-    public function setIp(string $ip): self
+    public function setSource(string $source): self
     {
-        $this->ip = $ip;
-
+        $this->source = $source;
         return $this;
     }
 
-    public function getMac(): ?string
+    public function getDestination(): ?string
     {
-        return $this->mac;
+        return $this->destination;
     }
 
-    public function setMac(string $mac): self
+    public function setDestination(string $destination): self
     {
-        $this->mac = $mac;
-
+        $this->destination = $destination;
         return $this;
     }
 
