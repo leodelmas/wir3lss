@@ -43,6 +43,7 @@ class GetLogsCommand extends Command
                     ->setSource($source)
                     ->setDestination($parts[4])
                     ->setSented(DateTime::createFromFormat('Y-m-d H:i:s', $sented))
+                    ->setUser($parts[6])
                     ->setResult($result);
                 $this->entityManager->persist($log);
             }

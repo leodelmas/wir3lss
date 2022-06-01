@@ -25,6 +25,9 @@ class Log
     #[ORM\Column(type: 'string', length: 255)]
     private $result;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -72,6 +75,18 @@ class Log
     public function setResult(string $result): self
     {
         $this->result = $result;
+
+        return $this;
+    }
+
+    public function getUser(): ?string
+    {
+        return $this->user;
+    }
+
+    public function setUser(string $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

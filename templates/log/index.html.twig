@@ -19,6 +19,7 @@
             <th>Sented</th>
             <th>Source</th>
             <th>Destination</th>
+            <th>User</th>
             <th>Result</th>
         </tr>
     </thead>
@@ -28,6 +29,7 @@
             <td>{{ log.sented|date('d/m/Y H:i') }}</td>
             <td>{{ log.source }}</td>
             <td>{{ log.destination }}</td>
+            <td>{{ log.user }}</td>
             <td>{{ log.result }}</td>
         </tr>
         {% else %}
