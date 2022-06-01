@@ -1,3 +1,6 @@
+# Installation NGINX
+- src: geerlingguy.nginx
+
 # Installation php role
 - src: geerlingguy.php
 
@@ -6,3 +9,6 @@
 
 # Installation Yarn role
 - src: ocha.yarn
+
+# Installation MySQL
+- src: geerlingguy.mysql
