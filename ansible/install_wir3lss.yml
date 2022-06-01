@@ -5,24 +5,18 @@
 
   vars_files:
     - prod/main.yml
+    - prod/env.vault.yml
+    - prod/mysql.vault.yml
   roles:
-    - geerlingguy.php
-    - geerlingguy.composer
-    - ocha.yarn
+    - geerlingguy.nginx
+    #- geerlingguy.php
+    #- geerlingguy.composer
+    #- ocha.yarn
+    #- geerlingguy.mysql
 
   tasks:
-  - name: Installation de Nginx
-    block:
-      - name: Update
-        apt: update_cache=yes
-      - name: Installation de Nginx
-        apt:
-          name: nginx
-          state: latest
-        notify: restart nginx
-
-  - name: Application droit www-data
-    command: chown www-data:www-data /var/www/html
+  - name: Application droit webserver
+    command: chown root:root /var/www/html -R
 
   - name: Deploiement du code depuis GitHub
     block:
@@ -33,6 +27,21 @@
           dest: /var/www/html 
           accept_hostkey: yes
           force: yes
+      - name: Copie .env
+        template:
+          src: "templates/.env.j2"
+          dest: "/var/www/html/.env"
+          mode: 0644
+      - name: Application droit www-data
+        command: chown www-data:www-data /var/www/html -R
+      - name: Installation dépendance composer
+        shell: cd /var/www/html && echo yes | composer install
+      - name: Installation de yarm
+        shell: cd /var/www/html/assets && sudo yarn install
+      - name: Build yarn
+        shell: cd /var/www/html && sudo yarn run build
+      - name: Application droit www-data
+        command: chown www-data:www-data /var/www/html -R
 
   handlers:
         - import_tasks: handlers/main.yml 
