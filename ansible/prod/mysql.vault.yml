@@ -1,0 +1,10 @@
+mysql_root_password_update: true
+mysql_root_password: mysqlP@ssw0rd
+mysql_databases:
+  - name: wir3less
+    encoding: latin1
+    collation: latin1_general_ci
+mysql_users:
+  - name: mysqluser
+    password: mysqlP@ssw0rd
+    priv: "wir3less.*:ALL"

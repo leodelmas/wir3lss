@@ -1,10 +1,33 @@
+# NGINX
+nginx_remove_default_vhost: true
+nginx_vhosts:
+  - listen: "80"
+    server_name: "wir3less"
+    root: "/var/www/html/public"
+    index: "index.php index.html index.htm"
+    access_log: "/var/log/nginx/wir3less_access.log"
+    error_log: "/var/log/nginx/wir3less_error.log"
+    state: "present"
+    extra_parameters: |
+      location ~ ^/index\.php(/|$) {
+          fastcgi_split_path_info ^(.+\.php)(/.+)$;
+          fastcgi_pass 172.0.0.1:9000;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          fastcgi_param DOCUMENT_ROOT $realpath_root;
+          include fastcgi_params;
+          internal;
+      }
+nginx_user: "www-data"
+nginx_server_tokens: "off"
+
 # PHP
 php_default_version_debian: "8.0"
 php_enable_php_fpm: true
-php_memory_limit: "128M"
-php_max_execution_time: "90"
-php_upload_max_filesize: "256M"
+php_memory_limit: "256M"
+php_max_execution_time: "300"
+php_upload_max_filesize: "32M"
 php_webserver_daemon: "nginx"
+php_date_timezone: "Europe/Paris"
 php_packages:
   - php
   - php-cli
