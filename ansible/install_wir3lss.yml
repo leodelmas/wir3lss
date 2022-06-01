@@ -9,10 +9,10 @@
     - prod/mysql.vault.yml
   roles:
     - geerlingguy.nginx
-    #- geerlingguy.php
-    #- geerlingguy.composer
-    #- ocha.yarn
-    #- geerlingguy.mysql
+    - geerlingguy.php
+    - geerlingguy.composer
+    - ocha.yarn
+    - geerlingguy.mysql
 
   tasks:
   - name: Application droit webserver
@@ -42,6 +42,13 @@
         shell: cd /var/www/html && sudo yarn run build
       - name: Application droit www-data
         command: chown www-data:www-data /var/www/html -R
+
+  - name: Configure php/console Symfony
+    block:
+      - name: database configure
+        shell: cd /var/www/html && php bin/console d:d:c --if-not-exists
+      - name: database migration
+        shell: cd /var/www/html && echo yes | php bin/console d:m:m
 
   handlers:
         - import_tasks: handlers/main.yml 
