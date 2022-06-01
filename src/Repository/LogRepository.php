@@ -28,9 +28,9 @@ class LogRepository extends ServiceEntityRepository
             if ($logSearch->getKeyword()) {
                 $qb->andWhere(
                     $qb->expr()->orX(
-                        $qb->expr()->like('log.ip', ':search'),
-                        $qb->expr()->like('log.mac', ':search'),
-                        $qb->expr()->like('log.sented', ':search')
+                        $qb->expr()->like('log.source', ':search'),
+                        $qb->expr()->like('log.destination', ':search'),
+                        $qb->expr()->like('log.result', ':search')
                     )
                 )
                     ->setParameter('search', "%{$logSearch->getKeyword()}%");

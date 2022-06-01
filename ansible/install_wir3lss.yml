@@ -42,7 +42,7 @@
         shell: cd /var/www/html && sudo yarn run build
       - name: Application droit www-data
         command: chown www-data:www-data /var/www/html -R
- 
+
   - name: Configure php/console Symfony
     block:
       - name: database configure
