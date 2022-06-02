@@ -2,6 +2,9 @@
     &.active .page-link {
         background: $success;
         border-color: $success;
+        &:hover {
+            color: $white;        ;
+        }
     }
 
     .page-link {
