@@ -1,2 +1,9 @@
-// Dependencies
 @import "~bootstrap";
+
+@import "_partials/variables";
+
+@import "components/nav";
+
+.btn {
+    border-radius: 2rem;
+}

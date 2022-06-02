@@ -1,26 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log index{% endblock %}
+{% block title %}Journeaux{% endblock %}
 
 {% block body %}
-<h1>Log index</h1>
+<h1>Journeaux</h1>
 <form method="get" class="row row-cols-lg-auto g-3 align-items-center">
     <div class="col-12">
         <input type="text" name="search-keyword" class="form-control" value="{{ app.request.query.get('search-keyword') }}" aria-label="Rechercher" placeholder="Mot-clé">
     </div>
     <div class="col-12">
         <a href="{{ path('log_index') }}" class="btn btn-outline-secondary mr-1">Annuler</a>
-        <button type="submit" class="btn btn-primary">Rechercher</button>
+        <button type="submit" class="btn btn-success">Rechercher</button>
     </div>
 </form>
-<table class="table table-striped">
+<hr>
+<table class="table table-striped table-borderless">
     <thead>
         <tr>
-            <th>Sented</th>
+            <th>Date</th>
             <th>Source</th>
             <th>Destination</th>
-            <th>User</th>
-            <th>Result</th>
+            <th>Utilisateur</th>
+            <th>Resultat</th>
         </tr>
     </thead>
     <tbody>
@@ -34,7 +35,7 @@
         </tr>
         {% else %}
         <tr>
-            <td colspan="6">no records found</td>
+            <td colspan="5">Aucun résultat</td>
         </tr>
         {% endfor %}
     </tbody>
