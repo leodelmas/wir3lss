@@ -4,6 +4,7 @@ namespace App\Command;
 
 use DateTime;
 use App\Entity\Log;
+use App\Repository\LogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -17,6 +18,7 @@ class GetLogsCommand extends Command
     public function __construct(
         private EntityManagerInterface $entityManager,
         private string $importLogsPath,
+        private LogRepository $logRepository,
         string $name = null)
     {
         parent::__construct($name);
@@ -34,15 +36,16 @@ class GetLogsCommand extends Command
         
         foreach (file($this->importLogsPath) as $line) {
             $parts = explode(" ", $line);
-            if ($parts[3] == "Request(default/blk_blacklists_bank/-)") {
-                $sented = $parts[0] . $parts[1];
+            $lastImportedLog = $this->logRepository->findLastImported();
+            $sented = DateTime::createFromFormat('Y-m-d H:i:s', $parts[0] . $parts[1]);
+            if ($parts[3] == "Request(default/blk_blacklists_bank/-)" && $sented > $lastImportedLog->getSented()) {
                 $result = $parts[8] ? $parts[7] . " " . $parts[8] : $parts[7];
                 $source = explode('/', $parts[5])[0];
                 $log = new Log();
                 $log
                     ->setSource($source)
                     ->setDestination($parts[4])
-                    ->setSented(DateTime::createFromFormat('Y-m-d H:i:s', $sented))
+                    ->setSented($sented)
                     ->setUser($parts[6])
                     ->setResult($result);
                 $this->entityManager->persist($log);

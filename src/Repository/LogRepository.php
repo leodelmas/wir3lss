@@ -52,4 +52,13 @@ class LogRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findLastImported()
+    {
+        return $this->createQueryBuilder('log')
+            ->orderBy('log.sented', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();   
+    }
 }
