@@ -19,6 +19,7 @@ class AppFixtures extends Fixture
                 ->setSource($faker->ipv4)
                 ->setDestination($faker->ipv4)
                 ->setSented($faker->dateTime())
+                ->setUser(strtolower($faker->lastName))
                 ->setResult($results[rand(0, 1)]);
             $manager->persist($log);
         }
