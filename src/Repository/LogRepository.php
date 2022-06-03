@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Log;
 use App\Dto\LogSearch;
+use DateTime;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -28,8 +29,10 @@ class LogRepository extends ServiceEntityRepository
             if ($logSearch->getKeyword()) {
                 $qb->andWhere(
                     $qb->expr()->orX(
+                        $qb->expr()->like('log.sented', ':search'),
                         $qb->expr()->like('log.source', ':search'),
                         $qb->expr()->like('log.destination', ':search'),
+                        $qb->expr()->like('log.user', ':search'),
                         $qb->expr()->like('log.result', ':search')
                     )
                 )

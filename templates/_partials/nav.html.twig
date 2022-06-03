@@ -1,3 +1,5 @@
+{% trans_default_domain 'app' %}
+
 {% set current_route = app.request.get('_route') %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
     <div class="container-fluid">
@@ -10,12 +12,12 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link {% if current_route == 'log_index' %}active{% endif %}" href="{{ path('log_index') }}">Journeaux</a>
+                    <a class="nav-link {% if current_route == 'log_index' %}active{% endif %}" href="{{ path('log_index') }}">{{ 'logs'|trans }}</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Se déconnecter</a>
+                    <a href="#" class="nav-link">{{ 'logout'|trans }}</a>
                 </li>
             </ul>
         </div>
