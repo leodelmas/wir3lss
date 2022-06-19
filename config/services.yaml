@@ -27,3 +27,15 @@ services:
     App\Command\GetLogsCommand:
         arguments:
             $importLogsPath: '%app.importLogsPath%'
+
+    Symfony\Component\Ldap\Ldap:
+        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
+        tags:
+            - ldap
+    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+        arguments:
+            -   host: '%env(LDAP_HOST_SERVER)%'
+                port: '%env(LDAP_PORT_SERVER)%'
+                options:
+                    protocol_version: 3
+                    referrals: false
