@@ -8,8 +8,8 @@ security:
         my_ldap:
             ldap:
                 service: Symfony\Component\Ldap\Ldap
-                base_dn: 'DC=mjcsaintchamond,DC=lan'
-                search_dn: 'CN=administrateur,CN=Users,DC=mjcsaintchamond,DC=lan'
+                base_dn: '%env(LDAP_BASE_DN)%'
+                search_dn: '%env(LDAP_SEARCH_DN)%'
                 search_password: '%env(LDAP_SEARCH_PASSWORD)%'
                 default_roles: ROLE_USER
     firewalls:
@@ -34,5 +34,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/(login), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
