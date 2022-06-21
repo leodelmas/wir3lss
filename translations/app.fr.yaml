@@ -1,13 +1,23 @@
-logs: Journaux
+Logo: Logo
+
 label_previous: Précédent
 label_next: Suivant
-sented: Date
-source: Source
-destination: Destination
-user: Utilisateur
-result: Résultat
-no result: Aucun résultat
-cancel: Annuler
-search: Rechercher
-keyword: Mot clé
-logout: Se déconnecter
+
+Logs: Journaux
+Sented: Date
+Source: Source
+Destination: Destination
+User: Utilisateur
+Result: Résultat
+No result: Aucun résultat
+Cancel: Annuler
+Search: Rechercher
+Keyword: Mot clé
+
+Logout: Se déconnecter
+logout: se déconnecter
+Login: Connexion
+Username: Nom d'utilisateur
+Password: Mot de passe
+Sign in: Se connecter
+You are already connected: Vous êtes déjà connecté
