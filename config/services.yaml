@@ -6,7 +6,7 @@
 parameters:
     app.importLogsPath: '%env(IMPORT_LOGS_PATH)%'
     app.ldapServer: '%env(LDAP_HOST_SERVER)%'
-    app.ldapBaseDn: '%env(LDAP_BASE_DN)%'
+    app.ldapPortalDn: '%env(LDAP_PORTAL_DN)%'
     app.ldapSearchDn: '%env(LDAP_SEARCH_DN)%'
     app.ldapSearchPassword: '%env(LDAP_SEARCH_PASSWORD)%'
 
@@ -35,7 +35,7 @@ services:
     App\Controller\LdapUserController:
         arguments:
             $ldapServer: '%app.ldapServer%'
-            $ldapBaseDn: '%app.ldapBaseDn%'
+            $ldapPortalDn: '%app.ldapPortalDn%'
             $ldapSearchDn: '%app.ldapSearchDn%'
             $ldapSearchPassword: '%app.ldapSearchPassword%'
 

@@ -14,7 +14,7 @@ class LdapUserController extends AbstractController
 {
     public function __construct(
         private string $ldapServer,
-        private string $ldapBaseDn,
+        private string $ldapPortalDn,
         private string $ldapSearchDn,
         private string $ldapSearchPassword
     )
@@ -28,7 +28,7 @@ class LdapUserController extends AbstractController
             'host' => $this->ldapServer
         ]);
         $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
-        $query = $ldap->query($this->ldapBaseDn, '(&(objectclass=person))');
+        $query = $ldap->query($this->ldapPortalDn, '(&(objectclass=person))');
         $results = $query->execute()->toArray();
 
         dd($results);
