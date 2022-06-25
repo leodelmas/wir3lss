@@ -11,7 +11,7 @@
         <input type="text" name="search-keyword" class="form-control" value="{{ app.request.query.get('search-keyword') }}" aria-label="{{ 'Search'|trans }}" placeholder="{{ 'Keyword'|trans }}">
     </div>
     <div class="col-12">
-        <a href="{{ path('log_index') }}" class="btn btn-outline-secondary mr-1">{{ 'Cancel'|trans }}</a>
+        <a href="{{ path('log.index') }}" class="btn btn-outline-secondary mr-1">{{ 'Cancel'|trans }}</a>
         <button type="submit" class="btn btn-success">{{ 'Search'|trans }}</button>
     </div>
 </form>

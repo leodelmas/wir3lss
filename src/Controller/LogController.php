@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class LogController extends AbstractController
 {
-    #[Route('/', name: 'log_index', methods: ['GET'])]
+    #[Route('/', name: 'log.index', methods: ['GET'])]
     public function index(LogRepository $logRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $search = LogSearch::createFromArray($request->query->all());

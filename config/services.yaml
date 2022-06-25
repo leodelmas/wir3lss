@@ -5,6 +5,10 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app.importLogsPath: '%env(IMPORT_LOGS_PATH)%'
+    app.ldapServer: '%env(LDAP_HOST_SERVER)%'
+    app.ldapBaseDn: '%env(LDAP_BASE_DN)%'
+    app.ldapSearchDn: '%env(LDAP_SEARCH_DN)%'
+    app.ldapSearchPassword: '%env(LDAP_SEARCH_PASSWORD)%'
 
 services:
     # default configuration for services in *this* file
@@ -27,6 +31,13 @@ services:
     App\Command\GetLogsCommand:
         arguments:
             $importLogsPath: '%app.importLogsPath%'
+
+    App\Controller\LdapUserController:
+        arguments:
+            $ldapServer: '%app.ldapServer%'
+            $ldapBaseDn: '%app.ldapBaseDn%'
+            $ldapSearchDn: '%app.ldapSearchDn%'
+            $ldapSearchPassword: '%app.ldapSearchPassword%'
 
     Symfony\Component\Ldap\Ldap:
         arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
