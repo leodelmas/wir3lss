@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
+use App\Dto\LdapUser;
 use App\Form\LdapUserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Ldap\Entry;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Ldap\Ldap;
 
-#[Route('/ldap')]
+#[Route('/users')]
 class LdapUserController extends AbstractController
 {
     public function __construct(
@@ -31,9 +33,14 @@ class LdapUserController extends AbstractController
         $query = $ldap->query($this->ldapPortalDn, '(&(objectclass=person))');
         $results = $query->execute()->toArray();
 
-        dd($results);
+        $users = [];
+        /**  @var Entry $entry */
+        foreach ($results as $entry) {
+            $users[] = LdapUser::create($entry->getAttributes());
+        }
 
         return $this->render('ldap_user/index.html.twig', [
+            'users' => $users
         ]);
     }
 

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Log{% endblock %}
+
+{% block body %}
+    <h1>Create new Log</h1>
+
+    {{ include('ldap_user/_partials/_form.html.twig') }}
+
+    <a href="{{ path('ldap_user.index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Log{% endblock %}
+
+{% block body %}
+    <h1>Edit Log</h1>
+
+    {{ include('ldap_user/_partials/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('ldap_user.index') }}">back to list</a>
+
+    {{ include('ldap_user/_partials/_delete_form.html.twig') }}
+{% endblock %}

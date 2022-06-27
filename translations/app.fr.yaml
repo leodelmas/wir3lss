@@ -3,13 +3,14 @@ Logo: Logo
 label_previous: Précédent
 label_next: Suivant
 
+No result: Aucun résultat
+
 Logs: Journaux
 Sented: Date
 Source: Source
 Destination: Destination
 User: Utilisateur
 Result: Résultat
-No result: Aucun résultat
 Cancel: Annuler
 Search: Rechercher
 Keyword: Mot clé
@@ -21,3 +22,8 @@ Username: Nom d'utilisateur
 Password: Mot de passe
 Sign in: Se connecter
 You are already connected: Vous êtes déjà connecté
+
+Users: Utilisateurs
+Displayed Name: Nom affiché
+Email: E-mail
+Phone: Téléphone
