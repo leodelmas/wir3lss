@@ -47,11 +47,26 @@ class LdapUserController extends AbstractController
     #[Route('/new', name: 'ldap_user.new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
-        $form = $this->createForm(LdapUserType::class);
+        $ldapUserDto = new LdapUser();
+        $form = $this->createForm(LdapUserType::class, $ldapUserDto);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // TODO: Save user by LDAP
+
+            $ldap = Ldap::create('ext_ldap', [
+                'host' => $this->ldapServer
+            ]);
+            $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
+
+            $entry = new Entry('CN=' . $ldapUserDto->cn . ',' . $this->ldapPortalDn, [
+                'objectClass' => ['top', 'person', 'organizationalPerson', 'user'],
+                'mail' => [$ldapUserDto->email],
+                'telephoneNumber' => [$ldapUserDto->phone],
+                'displayName' => [$ldapUserDto->displayedName]
+            ]);
+            $entryManager = $ldap->getEntryManager();
+            $entryManager->add($entry);
+
             return $this->redirectToRoute('ldap_user.index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -60,15 +75,8 @@ class LdapUserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'ldap_user.show', methods: ['GET'])]
-    public function show(string $userCn): Response
-    {
-        // TODO: Get user by LDAP
-        return $this->render('ldap_user/show.html.twig');
-    }
-
-    #[Route('/{id}/edit', name: 'ldap_user.edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, string $userCn): Response
+    #[Route('/{cn}/edit', name: 'ldap_user.edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, string $cn): Response
     {
         $form = $this->createForm(LdapUserType::class);
         $form->handleRequest($request);
@@ -83,10 +91,10 @@ class LdapUserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'ldap_user.delete', methods: ['POST'])]
-    public function delete(Request $request, string $userCn): Response
+    #[Route('/{cn}', name: 'ldap_user.delete', methods: ['POST'])]
+    public function delete(Request $request, string $cn): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$userCn, $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$cn, $request->request->get('_token'))) {
             // TODO: Delete user by LDAP
         }
 
