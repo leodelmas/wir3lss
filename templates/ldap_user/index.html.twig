@@ -22,8 +22,9 @@
                 <td>{{ user.displayedName }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
-                <td>
-                    <a href="{{ path('ldap_user.edit', {'cn': user.cn}) }}" class="btn btn-secondary">{{ 'Edit'|trans }}</a>
+                <td class="d-flex">
+                    <a href="{{ path('ldap_user.edit', {'cn': user.cn}) }}" class="btn btn-sm btn-secondary">{{ 'Edit'|trans }}</a>
+                    {{ include('ldap_user/_partials/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}

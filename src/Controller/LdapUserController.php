@@ -95,9 +95,13 @@ class LdapUserController extends AbstractController
     public function delete(Request $request, string $cn): Response
     {
         if ($this->isCsrfTokenValid('delete'.$cn, $request->request->get('_token'))) {
-            // TODO: Delete user by LDAP
+            $ldap = Ldap::create('ext_ldap', [
+                'host' => $this->ldapServer
+            ]);
+            $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
+            $entryManager = $ldap->getEntryManager();
+            $entryManager->remove(new Entry('CN=' . $cn . ',' . $this->ldapPortalDn));
         }
-
         return $this->redirectToRoute('ldap_user.index', [], Response::HTTP_SEE_OTHER);
     }
 }
