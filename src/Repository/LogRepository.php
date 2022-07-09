@@ -64,4 +64,22 @@ class LogRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();   
     }
+
+    public function findNumberByUser()
+    {
+        return $this->createQueryBuilder('log')
+            ->select('COUNT(log.id) as count, log.user')
+            ->groupBy('log.user')
+            ->getQuery()
+            ->getArrayResult();   
+    }
+
+    public function findNumberByDate()
+    {
+        return $this->createQueryBuilder('log')
+            ->select('COUNT(log.id) as count, DATE(log.sented) as date')
+            ->groupBy('date')
+            ->getQuery()
+            ->getArrayResult();   
+    }
 }

@@ -7,8 +7,10 @@ No result: Aucun résultat
 New: Créer
 Edit: Editer
 Delete: Supprimer
+Export: Exporter
 Actions: Actions
 
+Dashboard: Tableau de bord
 Logs: Journaux
 Sented: Date
 Source: Source
@@ -18,6 +20,8 @@ Result: Résultat
 Cancel: Annuler
 Search: Rechercher
 Keyword: Mot clé
+Number of logins for each user: Connexions par utilisateur
+Number of logins for each day: Connexions par jour
 
 Logout: Se déconnecter
 logout: se déconnecter

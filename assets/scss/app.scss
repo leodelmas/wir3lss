@@ -1,12 +1,23 @@
+// Import Custom SB Admin 2 Variables (Overrides Default Bootstrap Variables)
+@import "variables.scss";
+
+@import '~@fortawesome/fontawesome-free/scss/solid.scss';
+@import '~@fortawesome/fontawesome-free/scss/brands.scss';
+@import '~@fortawesome/fontawesome-free/scss/regular.scss';
+
+// Import Bootstrap
 @import "~bootstrap";
 
-@import "_partials/variables";
+// Import Custom SB Admin 2 Mixins and Components
+@import "mixins.scss";
+@import "global.scss";
+@import "utilities.scss";
 
-@import "components/nav";
-@import "components/pagination";
-
-@import "pages/login.scss";
-
-.btn {
-    border-radius: 2rem;
-}
+// Custom Components
+@import "dropdowns.scss";
+@import "navs.scss";
+@import "buttons.scss";
+@import "cards.scss";
+@import "login.scss";
+@import "error.scss";
+@import "footer.scss";
