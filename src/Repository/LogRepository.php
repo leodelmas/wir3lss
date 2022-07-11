@@ -56,6 +56,13 @@ class LogRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllForExport()
+    {
+        return $this->createQueryBuilder('log')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
     public function findLastImported()
     {
         return $this->createQueryBuilder('log')

@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use App\Behavior\LogStatisticsHandlerTrait;
 use App\Dto\LogSearch;
+use App\Handler\LogsExportHandler;
 use App\Repository\LogRepository;
 use App\Utils\RandomColor;
 use Knp\Component\Pager\PaginatorInterface;
+use League\Csv\Writer;
+use SplTempFileObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,5 +64,19 @@ class LogController extends AbstractController
             'numberByUserChart' => $numberByUserChart,
             'numberByDateChart' => $numberByDateChart
         ]);
+    }
+
+    #[Route('/export', name: 'log.export', methods: ['GET'])]
+    public function export(LogRepository $logRepository)
+    {
+        $logs = $logRepository->findAllForExport();
+        foreach ($logs as $key => $log) {
+            $logs[$key]["sented"] = $log["sented"]->format("d/m/Y");
+        }
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        $csv->insertOne(["ID", "Source", "Destination", "Date", "Résultat", "Utilisateur"]);
+        $csv->insertAll($logs);
+        $csv->output('logs.csv');
+        die;
     }
 }
