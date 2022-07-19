@@ -19,7 +19,6 @@
     apt:
        name: 
         - yarn
-        - symfony
        state: present
        update_cache: yes
 
