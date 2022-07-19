@@ -15,13 +15,13 @@
     - geerlingguy.mysql
 
   pre_tasks:
-    - name : check yarn installation
-      apt:
-         name: 
-          - yarn
-          - symfony
-         state: present
-         update_cache: yes
+  - name : check yarn installation
+    apt:
+       name: 
+        - yarn
+        - symfony
+       state: present
+       update_cache: yes
 
   post_tasks:
   - name: Application droit webserver
