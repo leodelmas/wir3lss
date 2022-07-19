@@ -11,7 +11,8 @@
     - geerlingguy.nginx
     - geerlingguy.php
     - geerlingguy.composer
-    - ocha.yarn
+    #Bug certificat Validation à corriger
+    #- ocha.yarn
     - geerlingguy.mysql
 
   pre_tasks:
