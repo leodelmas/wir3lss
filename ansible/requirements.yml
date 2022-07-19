@@ -7,8 +7,5 @@
 # Installation composer role
 - src: geerlingguy.composer
 
-# Installation Yarn role
-- src: ocha.yarn
-
 # Installation MySQL
 - src: geerlingguy.mysql
