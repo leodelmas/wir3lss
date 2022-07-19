@@ -14,7 +14,16 @@
     - ocha.yarn
     - geerlingguy.mysql
 
-  tasks:
+  pre_tasks:
+    - name : check yarn installation
+      apt:
+         name: 
+          - yarn
+          - symfony
+         state: present
+         update_cache: yes
+
+  post_tasks:
   - name: Application droit webserver
     command: chown root:root /var/www/html -R
 
