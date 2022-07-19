@@ -11,8 +11,7 @@
     - geerlingguy.nginx
     - geerlingguy.php
     - geerlingguy.composer
-    #Comment temporaire
-    #- ocha.yarn
+    - ocha.yarn
     - geerlingguy.mysql
 
   pre_tasks:
