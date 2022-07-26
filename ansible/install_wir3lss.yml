@@ -15,15 +15,7 @@
     #- ocha.yarn
     - geerlingguy.mysql
 
-  pre_tasks:
-  - name : check yarn installation
-    apt:
-       name: 
-        - yarn
-       state: present
-       update_cache: yes
-
-  post_tasks:
+  tasks:
   - name: Application droit webserver
     command: chown root:root /var/www/html -R
 
