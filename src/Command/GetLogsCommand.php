@@ -7,13 +7,17 @@ use App\Entity\Log;
 use App\Repository\LogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GetLogsCommand extends Command
 {
+    use LockableTrait;
+
     protected static $defaultName = 'app:logs:get';
+    protected static $defaultDescription = 'Get logs from file';
 
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -26,13 +30,18 @@ class GetLogsCommand extends Command
 
     protected function configure(): void
     {
-        // ...
+        $this->setDescription(self::$defaultDescription);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->info("Import logs - Start Treatment");
+
+        if (!$this->lock()) {
+            $io->warning('The command is already running in another process.');
+            return Command::SUCCESS;
+        }
         
         foreach (file($this->importLogsPath) as $line) {
             $parts = explode(" ", $line);

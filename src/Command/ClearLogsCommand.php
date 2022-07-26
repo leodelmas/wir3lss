@@ -8,9 +8,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\LockableTrait;
 
 class ClearLogsCommand extends Command
 {
+    use LockableTrait;
+
     protected static $defaultName = 'app:logs:clear';
     protected static $defaultDescription = 'Delete logs that are a year or older';
 
@@ -31,6 +34,11 @@ class ClearLogsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->info("Clear logs - Start Treatment");
+
+        if (!$this->lock()) {
+            $io->warning('The command is already running in another process.');
+            return Command::SUCCESS;
+        }
 
         $logs = $this->logRepository->findAllOneYearOld();
 
