@@ -1,11 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Log{% endblock %}
+{% block title %}
+	{{ 'New'|trans }}
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Log</h1>
-
-    {{ include('ldap_user/_partials/_form.html.twig') }}
-
-    <a href="{{ path('ldap_user.index') }}">back to list</a>
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">{{ 'Users'|trans }}</h1>
+	</div>
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 fw-bold text-primary">{{ 'New'|trans }}</h6>
+		</div>
+		<div class="card-body">
+			{{ include('ldap_user/_partials/_form.html.twig') }}
+		</div>
+    </div>
 {% endblock %}

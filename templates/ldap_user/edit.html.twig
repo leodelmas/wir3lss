@@ -1,10 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Log{% endblock %}
+{% block title %}{{ 'Edit'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
-    {{ include('ldap_user/_partials/_form.html.twig') }}
-    <a href="{{ path('ldap_user.index') }}">back to list</a>
-    {{ include('ldap_user/_partials/_delete_form.html.twig') }}
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">{{ 'Users'|trans }}</h1>
+	</div>
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 fw-bold text-primary">{{ 'Edit'|trans }}</h6>
+		</div>
+		<div class="card-body">
+			{{ include('ldap_user/_partials/_form.html.twig') }}
+		</div>
+    </div>
 {% endblock %}

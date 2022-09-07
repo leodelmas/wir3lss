@@ -1,14 +1,4 @@
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-	<h1 class="h3 mb-0 text-gray-800">{{ 'Users'|trans }}</h1>
-</div>
-<div class="card shadow mb-4">
-	<div class="card-header py-3">
-		<h6 class="m-0 fw-bold text-primary">{{ 'New'|trans }}</h6>
-	</div>
-	<div class="card-body">
-		{{ form_start(form) }}
-		{{ form_widget(form) }}
-		<button class="btn">{{ button_label|default('Save') }}</button>
-		{{ form_end(form) }}
-	</div>
-</div>
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<button class="btn btn-primary">{{ 'Save'|trans }}</button>
+{{ form_end(form) }}
