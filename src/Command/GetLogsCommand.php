@@ -47,7 +47,7 @@ class GetLogsCommand extends Command
             $parts = explode(" ", $line);
             $lastImportedLog = $this->logRepository->findLastImported();
             $sented = DateTime::createFromFormat('Y-m-d H:i:s', $parts[0] . $parts[1]);
-            if ($parts[3] == "Request(default/blk_blacklists_bank/-)" && $sented > $lastImportedLog->getSented()) {
+            if (str_contains($parts[3], "Request(default/blk_blacklists_") && $sented > $lastImportedLog->getSented()) {
                 $result = $parts[8] ? $parts[7] . " " . $parts[8] : $parts[7];
                 $source = explode('/', $parts[5])[0];
                 $log = new Log();
