@@ -82,7 +82,7 @@ class LdapUserController extends AbstractController
             'host' => $this->ldapServer
         ]);
         $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
-        $query = $ldap->query('CN=' . $cn, '(&(objectclass=person))');
+        $query = $ldap->query('CN=' . $cn . ',' . $this->ldapPortalDn, '(&(objectclass=person))');
         $results = $query->execute()->toArray();
         $ldapUserDto = LdapUser::create($results[0]->getAttributes());
 
