@@ -78,11 +78,26 @@ class LdapUserController extends AbstractController
     #[Route('/{cn}/edit', name: 'ldap_user.edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, string $cn): Response
     {
-        $form = $this->createForm(LdapUserType::class);
+        $ldap = Ldap::create('ext_ldap', [
+            'host' => $this->ldapServer
+        ]);
+        $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
+        $query = $ldap->query('CN=' . $cn, '(&(objectclass=person))');
+        $results = $query->execute()->toArray();
+        $ldapUserDto = LdapUser::create($results[0]->getAttributes());
+
+        $form = $this->createForm(LdapUserType::class, $ldapUserDto);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // TODO: Save user by LDAP
+            $entry = new Entry('CN=' . $ldapUserDto->cn . ',' . $this->ldapPortalDn, [
+                'objectClass' => ['top', 'person', 'organizationalPerson', 'user'],
+                'mail' => [$ldapUserDto->email],
+                'telephoneNumber' => [$ldapUserDto->phone],
+                'displayName' => [$ldapUserDto->displayedName]
+            ]);
+            $entryManager = $ldap->getEntryManager();
+            $entryManager->update($entry);
             return $this->redirectToRoute('ldap_user.index', [], Response::HTTP_SEE_OTHER);
         }
 
