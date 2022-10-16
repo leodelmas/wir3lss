@@ -27,7 +27,8 @@ class LdapUserController extends AbstractController
     public function index(): Response
     {
         $ldap = Ldap::create('ext_ldap', [
-            'host' => $this->ldapServer
+            'host' => $this->ldapServer,
+            'encryption' => 'ssl'
         ]);
         $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
         $query = $ldap->query($this->ldapPortalDn, '(&(objectclass=person))');
@@ -54,7 +55,8 @@ class LdapUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $ldap = Ldap::create('ext_ldap', [
-                'host' => $this->ldapServer
+                'host' => $this->ldapServer,
+                'encryption' => 'ssl'
             ]);
             $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
 
@@ -62,7 +64,8 @@ class LdapUserController extends AbstractController
                 'objectClass' => ['top', 'person', 'organizationalPerson', 'user'],
                 'mail' => [$ldapUserDto->email],
                 'telephoneNumber' => [$ldapUserDto->phone],
-                'displayName' => [$ldapUserDto->displayedName]
+                'displayName' => [$ldapUserDto->displayedName],
+                'unicodePwd' => [mb_convert_encoding($ldapUserDto->password, 'utf-16le')]
             ]);
             $entryManager = $ldap->getEntryManager();
             $entryManager->add($entry);
@@ -79,7 +82,8 @@ class LdapUserController extends AbstractController
     public function edit(Request $request, string $cn): Response
     {
         $ldap = Ldap::create('ext_ldap', [
-            'host' => $this->ldapServer
+            'host' => $this->ldapServer,
+            'encryption' => 'ssl'
         ]);
         $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
         $query = $ldap->query('CN=' . $cn . ',' . $this->ldapPortalDn, '(&(objectclass=person))');
@@ -94,7 +98,8 @@ class LdapUserController extends AbstractController
                 'objectClass' => ['top', 'person', 'organizationalPerson', 'user'],
                 'mail' => [$ldapUserDto->email],
                 'telephoneNumber' => [$ldapUserDto->phone],
-                'displayName' => [$ldapUserDto->displayedName]
+                'displayName' => [$ldapUserDto->displayedName],
+                'unicodePwd' => [mb_convert_encoding($ldapUserDto->password, 'utf-16le')]
             ]);
             $entryManager = $ldap->getEntryManager();
             $entryManager->update($entry);
@@ -111,7 +116,8 @@ class LdapUserController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$cn, $request->request->get('_token'))) {
             $ldap = Ldap::create('ext_ldap', [
-                'host' => $this->ldapServer
+                'host' => $this->ldapServer,
+                'encryption' => 'ssl'
             ]);
             $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
             $entryManager = $ldap->getEntryManager();

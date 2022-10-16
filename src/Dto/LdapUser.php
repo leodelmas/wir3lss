@@ -16,6 +16,8 @@ class LdapUser
     
     public ?string $phone;
 
+    public ?string $password;
+
     public static function create(array $ldapEntryValues): LdapUser
     {
         $ldapUser = new self;
