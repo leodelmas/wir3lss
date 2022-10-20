@@ -28,7 +28,8 @@ class LdapUserController extends AbstractController
     {
         $ldap = Ldap::create('ext_ldap', [
             'host' => $this->ldapServer,
-            'encryption' => 'ssl'
+            'encryption' => 'ssl',
+            'port'  => 636
         ]);
         $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
         $query = $ldap->query($this->ldapPortalDn, '(&(objectclass=person))');
@@ -56,7 +57,8 @@ class LdapUserController extends AbstractController
 
             $ldap = Ldap::create('ext_ldap', [
                 'host' => $this->ldapServer,
-                'encryption' => 'ssl'
+                'encryption' => 'ssl',
+                'port'  => 636
             ]);
             $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
 
@@ -83,7 +85,8 @@ class LdapUserController extends AbstractController
     {
         $ldap = Ldap::create('ext_ldap', [
             'host' => $this->ldapServer,
-            'encryption' => 'ssl'
+            'encryption' => 'ssl',
+            'port'  => 636
         ]);
         $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
         $query = $ldap->query('CN=' . $cn . ',' . $this->ldapPortalDn, '(&(objectclass=person))');
@@ -117,7 +120,8 @@ class LdapUserController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$cn, $request->request->get('_token'))) {
             $ldap = Ldap::create('ext_ldap', [
                 'host' => $this->ldapServer,
-                'encryption' => 'ssl'
+                'encryption' => 'ssl',
+                'port'  => 636
             ]);
             $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
             $entryManager = $ldap->getEntryManager();
