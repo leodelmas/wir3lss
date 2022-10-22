@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Dto\LdapUser;
 use App\Form\LdapUserType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Utils\LdapConnector;
+use Symfony\Component\Ldap\Ldap;
+use Symfony\Component\Ldap\Entry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Ldap\Entry;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Ldap\Ldap;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Ldap\Exception\ConnectionException;
 
 #[Route('/users')]
 class LdapUserController extends AbstractController
@@ -26,12 +29,7 @@ class LdapUserController extends AbstractController
     #[Route('/', name: 'ldap_user.index', methods: ['GET'])]
     public function index(): Response
     {
-        $ldap = Ldap::create('ext_ldap', [
-            'host' => $this->ldapServer,
-            'encryption' => 'ssl',
-            'port'  => 636
-        ]);
-        $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
+        $ldap = $this->ldapConnect('ldap_user.index');
         $query = $ldap->query($this->ldapPortalDn, '(&(objectclass=person))');
         $results = $query->execute()->toArray();
 
@@ -128,5 +126,21 @@ class LdapUserController extends AbstractController
             $entryManager->remove(new Entry('CN=' . $cn . ',' . $this->ldapPortalDn));
         }
         return $this->redirectToRoute('ldap_user.index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    private function ldapConnect(string $redirectionRouteFailure)
+    {
+        try {
+            $ldap = Ldap::create('ext_ldap', [
+                'host' => $this->ldapServer,
+                'encryption' => 'ssl',
+                'port'  => 636
+            ]);
+            $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword, [], Response::HTTP_TEMPORARY_REDIRECT);
+        }
+        catch (ConnectionException $e) {
+            $this->redirectToRoute($redirectionRouteFailure);
+        }
+        return $ldap;
     }
 }
