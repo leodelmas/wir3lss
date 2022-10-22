@@ -68,7 +68,8 @@ class LdapUserController extends AbstractController
                 'mail' => [$ldapUserDto->email],
                 'telephoneNumber' => [$ldapUserDto->phone],
                 'displayName' => [$ldapUserDto->displayedName],
-                'unicodePwd' => [mb_convert_encoding("\"" . $ldapUserDto->password . "\"", "UTF-16LE")]
+                'unicodePwd' => [mb_convert_encoding("\"" . $ldapUserDto->password . "\"", "UTF-16LE")],
+                'userAccountControl' => ["512"] // Activated by default
             ]);
             $entryManager = $ldap->getEntryManager();
             $entryManager->add($entry);
@@ -106,7 +107,8 @@ class LdapUserController extends AbstractController
                 'mail' => [$ldapUserDto->email],
                 'telephoneNumber' => [$ldapUserDto->phone],
                 'displayName' => [$ldapUserDto->displayedName],
-                'unicodePwd' => [mb_convert_encoding("\"" . $ldapUserDto->password . "\"", "UTF-16LE")]
+                'unicodePwd' => [mb_convert_encoding("\"" . $ldapUserDto->password . "\"", "UTF-16LE")],
+                'userAccountControl' => ["512"] // Activated by default
             ]);
             $entryManager = $ldap->getEntryManager();
             $entryManager->update($entry);
