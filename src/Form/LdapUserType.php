@@ -19,7 +19,9 @@ class LdapUserType extends AbstractType
             ->add('displayedName', TextType::class)
             ->add('email', EmailType::class)
             ->add('phone', TextType::class)
-            ->add('password', PasswordType::class)
+            ->add('password', PasswordType::class, [
+                'help' => 'Le mot de passe doit contenir au moins : 10 caractères, 1 majuscule, 1 chiffre, 1 caractère spécial'
+            ])
         ;
     }
 
