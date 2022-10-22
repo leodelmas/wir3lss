@@ -62,10 +62,13 @@ class LdapUserController extends AbstractController
 
             $entry = new Entry('CN=' . $ldapUserDto->cn . ',' . $this->ldapPortalDn, [
                 'objectClass' => ['top', 'person', 'organizationalPerson', 'user'],
+                'userPrincipalName' => [$ldapUserDto->cn . '@mjcsaintchamond.lan'],
+                'sAMAccountName' => [$ldapUserDto->cn],
+                'givenName' => [$ldapUserDto->displayedName],
                 'mail' => [$ldapUserDto->email],
                 'telephoneNumber' => [$ldapUserDto->phone],
                 'displayName' => [$ldapUserDto->displayedName],
-                'unicodePwd' => [mb_convert_encoding($ldapUserDto->password, 'utf-16le')]
+                'unicodePwd' => [mb_convert_encoding("\"" . $ldapUserDto->password . "\"", "UTF-16LE")]
             ]);
             $entryManager = $ldap->getEntryManager();
             $entryManager->add($entry);
