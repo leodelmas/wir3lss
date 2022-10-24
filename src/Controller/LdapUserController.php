@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use Exception;
 use App\Dto\LdapUser;
 use App\Form\LdapUserType;
-use App\Utils\LdapConnector;
 use Symfony\Component\Ldap\Ldap;
 use Symfony\Component\Ldap\Entry;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,7 +93,7 @@ class LdapUserController extends AbstractController
         $results = $query->execute()->toArray();
         $ldapUserDto = LdapUser::create($results[0]->getAttributes());
 
-        $form = $this->createForm(LdapUserType::class, $ldapUserDto);
+        $form = $this->createForm(LdapUserType::class, $ldapUserDto, ['edit' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

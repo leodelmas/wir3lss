@@ -15,7 +15,11 @@ class LdapUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('cn', TextType::class)
+            ->add('cn', TextType::class, [
+                'attr' => [
+                    'readonly' => $options['edit']
+                ]
+            ])
             ->add('displayedName', TextType::class)
             ->add('email', EmailType::class)
             ->add('phone', TextType::class)
@@ -29,7 +33,8 @@ class LdapUserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => LdapUser::class,
-            'translation_domain' => 'app'
+            'translation_domain' => 'app',
+            'edit' => false
         ]);
     }
 }
