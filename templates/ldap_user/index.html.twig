@@ -35,9 +35,12 @@
 							<td>{{ user.email }}</td>
 							<td>{{ user.phone }}</td>
 							<td class="d-flex">
-								<a href="{{ path('ldap_user.edit', {'cn': user.cn}) }}" class="btn btn-secondary btn-circle mr-1">
+								<a href="{{ path('ldap_user.edit', {'cn': user.cn}) }}" class="btn btn-secondary btn-circle">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
+								<a href="{{ path('ldap_user.password', {'cn': user.cn}) }}" class="btn btn-warning btn-circle">
+									<i class="fa-solid fa-lock"></i>
+								</a>
 								{{ include('ldap_user/_partials/_delete_form.html.twig') }}
 							</td>
 						</tr>

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Dto\LdapUser;
 use App\Form\LdapUserType;
+use App\Form\LdapUserPasswordType;
 use Symfony\Component\Ldap\Ldap;
 use Symfony\Component\Ldap\Entry;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,7 +106,6 @@ class LdapUserController extends AbstractController
                 'mail' => [$ldapUserDto->email],
                 'telephoneNumber' => [$ldapUserDto->phone],
                 'displayName' => [$ldapUserDto->displayedName],
-                'unicodePwd' => [mb_convert_encoding("\"" . $ldapUserDto->password . "\"", "UTF-16LE")],
                 'userAccountControl' => ["512"] // Activated by default
             ]);
             $entryManager = $ldap->getEntryManager();
@@ -114,6 +114,36 @@ class LdapUserController extends AbstractController
         }
 
         return $this->renderForm('ldap_user/edit.html.twig', [
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/{cn}/password', name: 'ldap_user.password', methods: ['GET', 'POST'])]
+    public function password(Request $request, string $cn): Response
+    {
+        $ldap = Ldap::create('ext_ldap', [
+            'host' => $this->ldapServer,
+            'encryption' => 'ssl',
+            'port'  => 636
+        ]);
+        $ldap->bind($this->ldapSearchDn, $this->ldapSearchPassword);
+        $query = $ldap->query('CN=' . $cn . ',' . $this->ldapPortalDn, '(&(objectclass=person))');
+        $results = $query->execute()->toArray();
+        $ldapUserDto = LdapUser::create($results[0]->getAttributes());
+
+        $form = $this->createForm(LdapUserPasswordType::class, $ldapUserDto);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entry = new Entry('CN=' . $ldapUserDto->cn . ',' . $this->ldapPortalDn, [
+                'unicodePwd' => [mb_convert_encoding("\"" . $ldapUserDto->password . "\"", "UTF-16LE")]
+            ]);
+            $entryManager = $ldap->getEntryManager();
+            $entryManager->update($entry);
+            return $this->redirectToRoute('ldap_user.index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('ldap_user/password.html.twig', [
             'form' => $form
         ]);
     }
