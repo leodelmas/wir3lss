@@ -70,7 +70,13 @@
 							<td>{{ log.source }}</td>
 							<td>{{ log.destination }}</td>
 							<td>{{ log.user }}</td>
-							<td>{{ log.result }}</td>
+							<td>
+								{% if "CONNECT REDIRECT" in log.result or "GET REDIRECT" in log.result %}
+									<span class="badge bg-danger">{{ 'Blocked'|trans }}</span>
+								{% else %}
+									<span class="badge bg-secondary">{{ log.result|title }}</span>
+								{% endif %}
+							</td>
 						</tr>
 					{% else %}
 						<tr>

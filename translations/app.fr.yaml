@@ -24,6 +24,7 @@ Search: Rechercher
 Keyword: Mot clé
 Number of logins for each user: Connexions par utilisateur
 Number of logins for each day: Connexions par jour
+Blocked: Bloqué
 
 Logout: Se déconnecter
 logout: se déconnecter
@@ -39,7 +40,6 @@ Displayed name: Nom affiché
 Email: E-mail
 Phone: Téléphone
 Repeat Password: Confirmation du mot de passe
-The password fields must match: Les mots de passes doivent correspondre
 
 Cn help message: "L'identifiant de l'utilisateur : 1 chaîne de caractères, en minuscule - Exemple : jdubois"
 Displayed name help message: "Le nom complet de l'utilisateur affiché - Exemple : Jean DUBOIS"
