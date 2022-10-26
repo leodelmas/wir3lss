@@ -10,11 +10,11 @@ trait LogStatisticsHandlerTrait
      * @param string $key
      * @return array
      */
-    public function handleRequestResult(array $rawResult, string $key): array
+    public function handleRequestResult(array $rawResult, string $key, bool $dateFormatter = false): array
     {
         $cleanArray = [];
         foreach ($rawResult as $line) {
-            $cleanArray[] =  $line[$key];
+            $cleanArray[] =  $dateFormatter ? date("d/m/Y", strtotime($line[$key])) : $line[$key];
         }
         return $cleanArray;
     }

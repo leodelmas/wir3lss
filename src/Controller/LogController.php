@@ -42,7 +42,7 @@ class LogController extends AbstractController
         $numberByDateChart = $chartBuilder->createChart(Chart::TYPE_LINE);
         $numberByDateChartColor = RandomColor::one();
         $numberByDateChart->setData([
-            'labels' => $this->handleRequestResult($rawNumberByDate, "date"),
+            'labels' => $this->handleRequestResult($rawNumberByDate, "date", true),
             'datasets' => [
                 [
                     'label' => $translator->trans('Number of logins for each day', [], 'app'),
