@@ -25,10 +25,24 @@ class LogRepository extends ServiceEntityRepository
     public function findAllFiltered(?LogSearch $logSearch): Query
     {
         $qb = $this->createQueryBuilder('log');
-        if (null !== $logSearch) {
+        if (null !== $logSearch && $logSearch->getKeyword()) {
             
-            if ($logSearch->getKeyword()) {
-
+            if ($logSearch->getKeyword() == "Succès" || $logSearch->getKeyword() == "Bloqué") {
+                switch ($logSearch->getKeyword()) {
+                    case "Succès":
+                        $qb
+                            ->andWhere('log.result = :result')
+                            ->setParameter('result', 'CONNECT');
+                        break;
+                    case "Bloqué":
+                        $qb
+                            ->andWhere('log.result = :firstResult OR log.result = :secondResult')
+                            ->setParameter('firstResult', 'CONNECT REDIRECT')
+                            ->setParameter('secondResult', 'GET REDIRECT');
+                        break;
+                }
+            }
+            else  {
                 if (preg_match("/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/", $logSearch->getKeyword())) {
                     $sented = DateTime::createFromFormat("d/m/Y", $logSearch->getKeyword());
                     $search = $sented->format('Y-m-d');
@@ -42,8 +56,7 @@ class LogRepository extends ServiceEntityRepository
                         $qb->expr()->like('log.sented', ':search'),
                         $qb->expr()->like('log.source', ':search'),
                         $qb->expr()->like('log.destination', ':search'),
-                        $qb->expr()->like('log.user', ':search'),
-                        $qb->expr()->like('log.result', ':search')
+                        $qb->expr()->like('log.user', ':search')
                     )
                 )
                     ->setParameter('search', "%{$search}%");

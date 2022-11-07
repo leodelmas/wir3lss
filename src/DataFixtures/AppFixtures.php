@@ -12,7 +12,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Faker\Factory::create();
-        $results = ["OK", "FAILED"];
+        $results = ["CONNECT", "CONNECT REDIRECT", "GET REDIRECT"];
         for ($i = 0; $i < 20; $i++) {
             $log = new Log();
             $log
