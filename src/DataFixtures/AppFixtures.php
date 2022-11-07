@@ -16,10 +16,10 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 20; $i++) {
             $log = new Log();
             $log
-                ->setSource($faker->ipv4)
-                ->setDestination($faker->ipv4)
-                ->setSented($faker->dateTimeAD())
-                ->setUser(strtolower($faker->lastName))
+                ->setSource("[FAKE] " . $faker->ipv4)
+                ->setDestination("[FAKE] " . $faker->domainName())
+                ->setSented($faker->dateTime())
+                ->setUser("[FAKE] " . strtolower($faker->lastName))
                 ->setResult($results[rand(0, 2)]);
             $manager->persist($log);
         }
