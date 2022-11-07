@@ -14,13 +14,17 @@ class AppFixtures extends Fixture
     {
         $faker = Faker\Factory::create();
         $results = ["CONNECT", "CONNECT REDIRECT", "GET REDIRECT"];
+        $users = [];
+        for ($i = 0; $i < 3; $i++) {
+            $users[] = "[FAKE] " . strtolower($faker->lastName);
+        }
         for ($i = 0; $i < 20; $i++) {
             $log = new Log();
             $log
                 ->setSource("[FAKE] " . $faker->ipv4)
                 ->setDestination(strtolower($faker->domainName()))
                 ->setSented($faker->dateTime(new DateTime('-1 year')))
-                ->setUser("[FAKE] " . strtolower($faker->lastName))
+                ->setUser($users[rand(0, 2)])
                 ->setResult($results[rand(0, 2)]);
             $manager->persist($log);
         }
