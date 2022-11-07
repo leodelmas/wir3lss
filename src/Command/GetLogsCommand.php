@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use DateTime;
 use App\Entity\Log;
+use DateTime;
 use App\Repository\LogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -22,6 +22,7 @@ class GetLogsCommand extends Command
     public function __construct(
         private EntityManagerInterface $entityManager,
         private string $importLogsPath,
+        private string $importAccessPath,
         private LogRepository $logRepository,
         string $name = null)
     {
@@ -42,10 +43,12 @@ class GetLogsCommand extends Command
             $io->warning('The command is already running in another process.');
             return Command::SUCCESS;
         }
+
+        $lastImportedLog = $this->logRepository->findLastImported();
         
+        // Block file
         foreach (file($this->importLogsPath) as $line) {
             $parts = explode(" ", $line);
-            $lastImportedLog = $this->logRepository->findLastImported();
             $sented = DateTime::createFromFormat('Y-m-d H:i:s', $parts[0] . $parts[1]);
             if (str_contains($parts[3], "Request(default/blk_blacklists_") && $sented > $lastImportedLog->getSented()) {
                 $result = $parts[8] ? $parts[7] . " " . $parts[8] : $parts[7];
@@ -60,6 +63,23 @@ class GetLogsCommand extends Command
                 $this->entityManager->persist($log);
             }
         }
+
+        // Access file
+        foreach (file($this->importAccessPath) as $line) {
+            $parts = explode(" ", $line);
+            $sented = (new DateTime())->setTimestamp(intval($parts[0]));
+            if ($parts[3] === "TCP_TUNNEL/200" && str_contains($parts[6], "www.") && $sented > $lastImportedLog->getSented()) {
+                $log = new Log();
+                $log
+                    ->setSource($parts[2])
+                    ->setDestination($parts[6])
+                    ->setSented($sented)
+                    ->setUser($parts[7])
+                    ->setResult($parts[5]);
+                $this->entityManager->persist($log);
+            }
+        }
+
         $this->entityManager->flush();
         $io->success('Finished ! Successfully imported logs.');
         return Command::SUCCESS;
