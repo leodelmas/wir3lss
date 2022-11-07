@@ -14,32 +14,6 @@
 			{{ 'Export'|trans }}
 		</a>
 	</div>
-	<div class="row">
-		<div class="col-xl-8 col-lg-7">
-			<div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<h6 class="m-0 fw-bold text-primary">{{ 'Number of logins for each day'|trans }}</h6>
-				</div>
-				<div class="card-body">
-					<div class="py-2">
-						{{ render_chart(numberByDateChart) }}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-xl-4 col-lg-5">
-			<div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<h6 class="m-0 fw-bold text-primary">{{ 'Number of logins for each user'|trans }}</h6>
-				</div>
-				<div class="card-body">
-					<div class="py-2">
-						{{ render_chart(numberByUserChart) }}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
 			<h6 class="m-0 fw-bold text-primary">{{ 'Logs'|trans }}</h6>
@@ -90,6 +64,32 @@
 		</div>
 		<div class="m-auto">
 			{{ knp_pagination_render(logs) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xl-8 col-lg-7">
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 fw-bold text-primary">{{ 'Number of logins for each day'|trans }}</h6>
+				</div>
+				<div class="card-body">
+					<div class="py-2">
+						{{ render_chart(numberByDateChart) }}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-4 col-lg-5">
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 fw-bold text-primary">{{ 'Number of logins for each user'|trans }}</h6>
+				</div>
+				<div class="card-body">
+					<div class="py-2">
+						{{ render_chart(numberByUserChart) }}
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}
