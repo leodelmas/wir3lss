@@ -73,6 +73,8 @@
 							<td>
 								{% if "CONNECT REDIRECT" in log.result or "GET REDIRECT" in log.result %}
 									<span class="badge bg-danger">{{ 'Blocked'|trans }}</span>
+								{% elseif "CONNECT" in log.result %}
+									<span class="badge bg-success">{{ 'Success'|trans }}</span>
 								{% else %}
 									<span class="badge bg-secondary">{{ log.result|title }}</span>
 								{% endif %}
