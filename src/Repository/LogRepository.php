@@ -26,7 +26,17 @@ class LogRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('log');
         if (null !== $logSearch) {
+            
             if ($logSearch->getKeyword()) {
+
+                if (preg_match("/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/", $logSearch->getKeyword())) {
+                    $sented = DateTime::createFromFormat("d/m/Y", $logSearch->getKeyword());
+                    $search = $sented->format('Y-m-d');
+                }
+                else {
+                    $search = $logSearch->getKeyword();
+                }
+
                 $qb->andWhere(
                     $qb->expr()->orX(
                         $qb->expr()->like('log.sented', ':search'),
@@ -36,7 +46,7 @@ class LogRepository extends ServiceEntityRepository
                         $qb->expr()->like('log.result', ':search')
                     )
                 )
-                    ->setParameter('search', "%{$logSearch->getKeyword()}%");
+                    ->setParameter('search', "%{$search}%");
             }
         }
         $qb->orderBy('log.sented', 'desc');
