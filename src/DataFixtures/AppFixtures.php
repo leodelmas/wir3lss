@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Log;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
@@ -17,8 +18,8 @@ class AppFixtures extends Fixture
             $log = new Log();
             $log
                 ->setSource("[FAKE] " . $faker->ipv4)
-                ->setDestination("[FAKE] " . $faker->domainName())
-                ->setSented($faker->dateTime())
+                ->setDestination(strtolower($faker->domainName()))
+                ->setSented($faker->dateTime(new DateTime('-1 year')))
                 ->setUser("[FAKE] " . strtolower($faker->lastName))
                 ->setResult($results[rand(0, 2)]);
             $manager->persist($log);
