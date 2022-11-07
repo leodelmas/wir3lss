@@ -75,7 +75,7 @@ class GetLogsCommand extends Command
                     ->setDestination($parts[6])
                     ->setSented($sented)
                     ->setUser($parts[7])
-                    ->setResult($parts[5]);
+                    ->setResult(trim($parts[5]));
                 $this->entityManager->persist($log);
             }
         }
